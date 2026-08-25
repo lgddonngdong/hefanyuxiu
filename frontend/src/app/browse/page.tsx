@@ -14,6 +14,7 @@ export default function BrowsePage() {
   const [filterFamily, setFilterFamily] = useState('');
   const [families, setFamilies] = useState<string[]>([]);
   const [filterNative, setFilterNative] = useState<string>('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const filters: Record<string, string> = {};
@@ -21,12 +22,16 @@ export default function BrowsePage() {
     if (filterNative) filters.is_native = filterNative;
 
     setLoading(true);
+    setError('');
     api.getPlants(page, 12, filters).then(res => {
       setPlants(res.data);
       setTotalPages(res.pagination.total_pages);
       setTotal(res.pagination.total);
       setLoading(false);
-    }).catch(() => setLoading(false));
+    }).catch((err) => {
+      setError(err.message || '加载数据失败');
+      setLoading(false);
+    });
   }, [page, filterFamily, filterNative]);
 
   useEffect(() => {
@@ -77,6 +82,13 @@ export default function BrowsePage() {
           </button>
         )}
       </div>
+
+      {/* Error */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-700 text-sm">
+          {error}
+        </div>
+      )}
 
       {/* Plants Grid */}
       {loading ? (

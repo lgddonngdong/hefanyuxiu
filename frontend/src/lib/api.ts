@@ -159,22 +159,22 @@ export const api = {
   // Stats
   getStats: async (): Promise<{ data: Stats }> => {
     if (isSupabaseConfigured && supabase) {
-      const { count: total } = await supabase.from('plants').select('*', { count: 'exact', head: true });
-      const { count: nativeCount } = await supabase.from('plants').select('*', { count: 'exact', head: true }).eq('is_native', true);
+      // Fetch all records for counting (reliable for small datasets)
+      const { data: allPlants, error } = await supabase.from('plants').select('family, genus, is_native');
+      if (error) throw new Error(error.message);
 
-      const { data: familiesData } = await supabase.from('plants').select('family');
-      const families = new Set((familiesData || []).map(r => r.family));
-
-      const { data: generaData } = await supabase.from('plants').select('genus');
-      const genera = new Set((generaData || []).map(r => r.genus));
+      const plants = allPlants || [];
+      const families = new Set(plants.map(r => r.family));
+      const genera = new Set(plants.map(r => r.genus));
+      const nativeCount = plants.filter(r => r.is_native).length;
 
       return {
         data: {
-          total_records: total || 0,
+          total_records: plants.length,
           total_families: families.size,
           total_genera: genera.size,
-          native_species: nativeCount || 0,
-          exotic_species: (total || 0) - (nativeCount || 0),
+          native_species: nativeCount,
+          exotic_species: plants.length - nativeCount,
         },
       };
     }
@@ -185,19 +185,26 @@ export const api = {
   getPlants: async (page = 1, limit = 20, filters?: Record<string, string>): Promise<PaginatedResponse<Plant>> => {
     if (isSupabaseConfigured && supabase) {
       const offset = (page - 1) * limit;
-      let query = supabase.from('plants').select('*', { count: 'exact' });
-      if (filters) query = buildSupabaseFilters(query, filters);
-      query = query.order('id').range(offset, offset + limit - 1);
 
-      const { data, error, count } = await query;
+      // Get total count by fetching IDs (reliable for small datasets)
+      let idQuery = supabase.from('plants').select('id');
+      if (filters) idQuery = buildSupabaseFilters(idQuery, filters);
+      const { data: allIds, error: idError } = await idQuery;
+      if (idError) throw new Error(idError.message);
+      const total = allIds?.length || 0;
+
+      // Get page data
+      let dataQuery = supabase.from('plants').select('*');
+      if (filters) dataQuery = buildSupabaseFilters(dataQuery, filters);
+      dataQuery = dataQuery.order('id').range(offset, offset + limit - 1);
+
+      const { data, error } = await dataQuery;
       if (error) throw new Error(error.message);
 
       const plants = (data || []) as Plant[];
-      const total = count || 0;
-      const enriched = await enrichWithImages(plants);
 
       return {
-        data: enriched,
+        data: plants,
         pagination: {
           page,
           limit,
