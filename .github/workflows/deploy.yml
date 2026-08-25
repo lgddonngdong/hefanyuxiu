@@ -35,6 +35,8 @@ jobs:
         working-directory: frontend
         env:
           NODE_ENV: production
+          NEXT_PUBLIC_SUPABASE_URL: https://fjftzqywrjorpfckdpiv.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqZnR6cXl3cmpvcnBmY2tkcGl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NDYwMTQsImV4cCI6MjEwMzIyMjAxNH0.2NR4B2FFA-XDRXT0KXYaBzikfp3zJ8AOf18OUPZYCFc
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
