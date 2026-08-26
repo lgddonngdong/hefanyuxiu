@@ -6,14 +6,15 @@ interface StatsBarProps {
 
 export default function StatsBar({ stats }: StatsBarProps) {
   const items = [
-    { label: '记录总数', value: stats?.total_records ?? '—' },
-    { label: '植物科数', value: stats?.total_families ?? '—' },
-    { label: '本土种', value: stats?.native_species ?? '—' },
-    { label: '外来种', value: stats?.exotic_species ?? '—' },
-  ];
+  { label: '记录总数', value: stats?.total_records ?? '—' },
+  { label: '植物科数', value: stats?.total_families ?? '—' },
+  { label: '本土种', value: stats?.native_species ?? '—' },
+  { label: '外来种', value: stats?.exotic_species ?? '—' },
+  { label: '入侵种', value: stats?.invasive_species ?? '—' },
+];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
       {items.map((item, i) => (
         <div
           key={i}

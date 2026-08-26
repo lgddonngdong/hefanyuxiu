@@ -44,6 +44,10 @@ body {
   .badge-exotic {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700;
   }
+
+  .badge-invasive {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700;
+  }
 }
 
 /* Custom scrollbar */

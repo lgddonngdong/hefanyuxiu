@@ -10,11 +10,24 @@ function getLifeForm(family: string): string {
 }
 
 function isNative(name: string): boolean {
-  const exoticKeywords = ['北美', '外来', '归化', '喜旱', '阿拉伯'];
+  const exoticKeywords = ['北美', '外来', '归化', '喜旱', '阿拉伯', '白车轴草', '白花草木樨', '草木樨', '刺槐', '南苜蓿', '天蓝苜蓿', '小苜蓿', '苦苣菜', '续断菊', '野莴苣', '药用蒲公英', '曼陀罗', '苘麻', '蒺藜', '藜', '猪毛菜', '厚萼凌霄', '女贞', '龙葵', '滨菊', '菊蒿', '白柳', '黑杨', '银白杨', '苜蓿'];
   for (const kw of exoticKeywords) {
     if (name.includes(kw)) return false;
   }
   return true;
+}
+
+function isInvasive(name: string): boolean {
+  const invasiveNames = [
+    '喜旱莲子草', '豚草', '小蓬草', '一年蓬', '苏门白酒草', '钻叶紫菀',
+    '反枝苋', '北美苋', '鬼针草', '大狼耙草', '刺苍耳', '野燕麦',
+    '阿拉伯婆婆纳', '北美车前', '北美独行菜', '匍匐大戟', '斑地锦草',
+    '白苞猩猩草', '粗毛牛膝菊', '圆叶牵牛', '牵牛', '小花山桃草', '山桃草',
+    '紫穗槐', '黄花酢浆草', '梣叶槭', '香丝草', '苍耳',
+    '白车轴草', '白花草木樨', '草木樨', '刺槐', '南苜蓿', '天蓝苜蓿',
+    '小苜蓿', '苦苣菜', '续断菊', '野莴苣',
+  ];
+  return invasiveNames.includes(name);
 }
 
 const habitats = ['河岸', '田野', '路旁', '草地', '灌丛', '林缘', '湿地', '荒地'];
@@ -275,6 +288,7 @@ export interface PlantRecord {
   description: string;
   wikipedia_url: string;
   is_native: boolean;
+  is_invasive: boolean;
   life_form: string;
   habitat: string;
   location: string;
@@ -295,6 +309,7 @@ export const mockPlants: PlantRecord[] = rawData.map(([id, name_cn, name_latin, 
     description: `${name_cn}（${name_latin}），${family}${genus}植物，黄河流域河南段自生植物。`,
     wikipedia_url: `https://en.wikipedia.org/wiki/${encodeURIComponent(name_latin)}`,
     is_native: isNative(name_cn),
+    is_invasive: isInvasive(name_cn),
     life_form: getLifeForm(family),
     habitat: habitats[id % habitats.length],
     location: locations[id % locations.length],
@@ -309,6 +324,7 @@ export const mockStats = {
   total_genera: new Set(mockPlants.map(p => p.genus)).size,
   native_species: mockPlants.filter(p => p.is_native).length,
   exotic_species: mockPlants.filter(p => !p.is_native).length,
+  invasive_species: mockPlants.filter(p => p.is_invasive).length,
 };
 
 export const mockFamilies = (() => {

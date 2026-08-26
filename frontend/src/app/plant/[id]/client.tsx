@@ -85,11 +85,14 @@ export default function PlantDetailClient({ id }: { id: string }) {
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
                 {plant.is_native ? (
                   <span className="badge-native">本土种</span>
                 ) : (
                   <span className="badge-exotic">外来种</span>
+                )}
+                {plant.is_invasive && (
+                  <span className="badge-invasive">入侵种</span>
                 )}
                 <span className="text-xs text-gray-400">#{plant.id}</span>
               </div>

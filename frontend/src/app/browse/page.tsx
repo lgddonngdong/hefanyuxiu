@@ -14,12 +14,14 @@ export default function BrowsePage() {
   const [filterFamily, setFilterFamily] = useState('');
   const [families, setFamilies] = useState<string[]>([]);
   const [filterNative, setFilterNative] = useState<string>('');
+  const [filterInvasive, setFilterInvasive] = useState<string>('');
   const [error, setError] = useState('');
 
   useEffect(() => {
     const filters: Record<string, string> = {};
     if (filterFamily) filters.family = filterFamily;
     if (filterNative) filters.is_native = filterNative;
+    if (filterInvasive) filters.is_invasive = filterInvasive;
 
     setLoading(true);
     setError('');
@@ -32,7 +34,7 @@ export default function BrowsePage() {
       setError(err.message || '加载数据失败');
       setLoading(false);
     });
-  }, [page, filterFamily, filterNative]);
+  }, [page, filterFamily, filterNative, filterInvasive]);
 
   useEffect(() => {
     api.getFamilies().then(res => {
@@ -73,9 +75,18 @@ export default function BrowsePage() {
           <option value="true">本土种</option>
           <option value="false">外来种</option>
         </select>
-        {(filterFamily || filterNative) && (
+        <select
+          value={filterInvasive}
+          onChange={e => { setFilterInvasive(e.target.value); setPage(1); }}
+          className="input-field max-w-xs text-sm"
+        >
+          <option value="">是否入侵</option>
+          <option value="true">入侵种</option>
+          <option value="false">非入侵种</option>
+        </select>
+        {(filterFamily || filterNative || filterInvasive) && (
           <button
-            onClick={() => { setFilterFamily(''); setFilterNative(''); setPage(1); }}
+            onClick={() => { setFilterFamily(''); setFilterNative(''); setFilterInvasive(''); setPage(1); }}
             className="text-sm text-plant-green-700 hover:underline"
           >
             清除筛选

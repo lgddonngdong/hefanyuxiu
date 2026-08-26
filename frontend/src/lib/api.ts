@@ -15,6 +15,7 @@ export interface Stats {
   total_genera: number;
   native_species: number;
   exotic_species: number;
+  invasive_species: number;
 }
 
 export interface PaginatedResponse<T> {
@@ -110,6 +111,7 @@ function buildSupabaseFilters(query: any, filters: Record<string, string>) {
   if (filters.family) query = query.eq('family', filters.family);
   if (filters.genus) query = query.eq('genus', filters.genus);
   if (filters.is_native !== undefined) query = query.eq('is_native', filters.is_native === 'true');
+  if (filters.is_invasive !== undefined) query = query.eq('is_invasive', filters.is_invasive === 'true');
   if (filters.life_form) query = query.eq('life_form', filters.life_form);
   return query;
 }
@@ -134,6 +136,7 @@ function filterPlants(plants: Plant[], filters: Record<string, string>): Plant[]
   if (filters.family) result = result.filter(p => p.family === filters.family);
   if (filters.genus) result = result.filter(p => p.genus === filters.genus);
   if (filters.is_native !== undefined) result = result.filter(p => p.is_native === (filters.is_native === 'true'));
+  if (filters.is_invasive !== undefined) result = result.filter(p => p.is_invasive === (filters.is_invasive === 'true'));
   if (filters.life_form) result = result.filter(p => p.life_form === filters.life_form);
   return result;
 }
@@ -160,13 +163,14 @@ export const api = {
   getStats: async (): Promise<{ data: Stats }> => {
     if (isSupabaseConfigured && supabase) {
       // Fetch all records for counting (reliable for small datasets)
-      const { data: allPlants, error } = await supabase.from('plants').select('family, genus, is_native');
+      const { data: allPlants, error } = await supabase.from('plants').select('family, genus, is_native, is_invasive');
       if (error) throw new Error(error.message);
 
       const plants = allPlants || [];
       const families = new Set(plants.map(r => r.family));
       const genera = new Set(plants.map(r => r.genus));
       const nativeCount = plants.filter(r => r.is_native).length;
+      const invasiveCount = plants.filter(r => r.is_invasive).length;
 
       return {
         data: {
@@ -175,6 +179,7 @@ export const api = {
           total_genera: genera.size,
           native_species: nativeCount,
           exotic_species: plants.length - nativeCount,
+          invasive_species: invasiveCount,
         },
       };
     }
@@ -333,6 +338,7 @@ export const api = {
       description: plant.description || '',
       wikipedia_url: plant.wikipedia_url || '',
       is_native: plant.is_native !== undefined ? plant.is_native : true,
+      is_invasive: plant.is_invasive !== undefined ? plant.is_invasive : false,
       life_form: plant.life_form || '草本',
       habitat: plant.habitat || '',
       location: plant.location || '',

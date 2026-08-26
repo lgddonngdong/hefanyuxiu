@@ -19,6 +19,7 @@ export default function AddPlantPage() {
     image_url: '',
     description: '',
     is_native: true,
+    is_invasive: false,
     life_form: '草本',
     habitat: '',
     location: '',
@@ -197,15 +198,27 @@ export default function AddPlantPage() {
         </FormField>
 
         {/* Native checkbox */}
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            name="is_native"
-            checked={formData.is_native}
-            onChange={handleChange}
-            className="w-4 h-4 rounded border-gray-300 text-plant-green-600 focus:ring-plant-green-400"
-          />
-          <label className="text-sm text-gray-700">本土种</label>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="is_native"
+              checked={formData.is_native}
+              onChange={handleChange}
+              className="w-4 h-4 rounded border-gray-300 text-plant-green-600 focus:ring-plant-green-400"
+            />
+            <label className="text-sm text-gray-700">本土种</label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="is_invasive"
+              checked={formData.is_invasive}
+              onChange={handleChange}
+              className="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-400"
+            />
+            <label className="text-sm text-gray-700">入侵种</label>
+          </div>
         </div>
 
         {/* Submit */}
