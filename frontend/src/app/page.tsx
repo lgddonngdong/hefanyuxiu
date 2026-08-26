@@ -26,11 +26,12 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-plant-green-800 via-plant-green-700 to-plant-green-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-plant-green-300 rounded-full blur-3xl" />
-        </div>
+      <section className="relative text-white overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: 'url(/hero-bg.png)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <div className="text-center max-w-3xl mx-auto">
@@ -44,7 +45,7 @@ export default function HomePage() {
               <br />
               调查数据库查询系统
             </h1>
-            <p className="text-lg text-plant-green-100 mb-8 leading-relaxed">
+            <p className="text-lg text-white/90 mb-8 leading-relaxed">
               记录、查询与管理黄河流域（河南段）自生植物调查数据。
               用户可随时录入新的调查记录，上传植株照片，共同构建不断丰富的植物多样性数据库。
             </p>

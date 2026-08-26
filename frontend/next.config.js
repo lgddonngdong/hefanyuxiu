@@ -7,8 +7,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: isProd ? '/plant-database' : '',
-  assetPrefix: isProd ? '/plant-database/' : '',
+  basePath: isProd ? '/hefanyuxiu' : '',
+  assetPrefix: isProd ? '/hefanyuxiu/' : '',
 };
 
 module.exports = nextConfig;

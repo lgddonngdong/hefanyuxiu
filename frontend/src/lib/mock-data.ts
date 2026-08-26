@@ -31,8 +31,8 @@ function isInvasive(name: string): boolean {
 }
 
 const habitats = ['河岸', '田野', '路旁', '草地', '灌丛', '林缘', '湿地', '荒地'];
-const locations = ['郑州市金水区', '洛阳市洛龙区', '开封市龙亭区', '新乡市牧野区', '焦作市解放区',
-  '南阳市卧龙区', '信阳市浉河区', '周口市川汇区', '驻马店市驿城区', '商丘市睢阳区'];
+const locations = ['郑州市惠济区', '洛阳市孟津区', '开封市龙亭区', '新乡市原阳县', '焦作市武陟县',
+  '三门峡市湖滨区', '濮阳市华龙区', '郑州市中牟县', '洛阳市新安县', '商丘市梁园区'];
 
 const rawData: [number, string, string, string, string][] = [
   [1, '节节草', 'Equisetum ramosissimum', '木贼科', '木贼属'],
