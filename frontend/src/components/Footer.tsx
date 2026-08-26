@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Leaf } from 'lucide-react';
 
 export default function Footer() {
@@ -18,9 +19,9 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-3 text-plant-green-300">功能导航</h4>
             <ul className="space-y-2 text-sm text-plant-green-200">
-              <li><a href="/browse" className="hover:text-white transition-colors">数据浏览</a></li>
-              <li><a href="/search" className="hover:text-white transition-colors">数据查询</a></li>
-              <li><a href="/add" className="hover:text-white transition-colors">录入数据</a></li>
+              <li><Link href="/browse" className="hover:text-white transition-colors">数据浏览</Link></li>
+              <li><Link href="/search" className="hover:text-white transition-colors">数据查询</Link></li>
+              <li><Link href="/add" className="hover:text-white transition-colors">录入数据</Link></li>
             </ul>
           </div>
 
