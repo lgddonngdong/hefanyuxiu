@@ -29,7 +29,7 @@ export default function HomePage() {
       <section className="relative text-white overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(/hero-bg.png)' }}
+          style={{ backgroundImage: 'url(/hefanyuxiu/hero-bg.png)' }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
 
