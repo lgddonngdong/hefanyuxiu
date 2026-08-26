@@ -305,7 +305,19 @@ export const api = {
   // Create
   createPlant: async (plant: Partial<Plant>): Promise<{ data: Plant }> => {
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.from('plants').insert([plant]).select().single();
+      // Work around sequence sync issue: fetch max ID and set explicitly
+      const { data: maxRow } = await supabase
+        .from('plants')
+        .select('id')
+        .order('id', { ascending: false })
+        .limit(1);
+      const nextId = (maxRow && maxRow.length > 0 ? maxRow[0].id : 0) + 1;
+
+      const { data, error } = await supabase
+        .from('plants')
+        .insert([{ ...plant, id: nextId }])
+        .select()
+        .single();
       if (error) throw new Error(error.message);
       return { data: data as Plant };
     }
